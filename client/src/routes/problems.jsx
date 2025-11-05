@@ -3,12 +3,15 @@ import { createFileRoute } from '@tanstack/react-router'
 export const Route = createFileRoute('/problems')({
   component: QuestionList,
 })
-import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-import { useNavigate } from '@tanstack/react-router';
+import React, { useState, useEffect } from 'react';
+import { Code2, Calendar, Heart, Filter, Search, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const QuestionList = () => {
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedLevel, setSelectedLevel] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [hoveredCard, setHoveredCard] = useState(null);
 
   const questions = [
     { id: 1, title: "Build a Responsive TODO App", level: "easy", category: "frontend", description: "Create a responsive TODO app with add/edit/delete and persistent storage.", tags: ["React", "CSS Grid", "LocalStorage"], likes: 230, posted: "2025-10-25" },
@@ -33,107 +36,265 @@ const QuestionList = () => {
     { id: 20, title: "Hospital Management Schema", level: "medium", category: "schema-design", description: "Design a complete SQL database for hospital patients, staff, and billing.", tags: ["Database", "Schema", "SQL"], likes: 176, posted: "2025-09-11" }
   ];
 
-  const itemsPerPage = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(questions.length / itemsPerPage);
-  const currentQuestions = questions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const levelColors = {
+    easy: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/30' },
+    medium: { bg: 'bg-yellow-500/10', text: 'text-yellow-400', border: 'border-yellow-500/30' },
+    hard: { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/30' }
+  };
+
+  const categoryColors = {
+    frontend: '#00ff88',
+    'schema-design': '#00ddaa',
+    web3: '#00ccbb'
+  };
+
+  const filteredQuestions = questions.filter(q => {
+    const matchesLevel = selectedLevel === 'all' || q.level === selectedLevel;
+    const matchesCategory = selectedCategory === 'all' || q.category === selectedCategory;
+    const matchesSearch = q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         q.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesLevel && matchesCategory && matchesSearch;
+  });
+
+  const itemsPerPage = 9;
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+  const currentQuestions = filteredQuestions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedLevel, selectedCategory, searchTerm]);
 
   const handleClick = (category) => {
-    if (category === "frontend"){
-        navigate({ to: '/frontend' });
+    if (category === "frontend") {
+      window.location.href = '/frontend';
     } else if (category === "schema-design") {
-        navigate({ to: '/sql' });
+      window.location.href = '/sql';
     } else if (category === "web3") {
-        navigate({ to: '/web3' });
+      window.location.href = '/web3';
     }
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 py-10">
-      <div className="max-w-6xl mx-auto px-6">
-        <h1 className="text-4xl font-semibold mb-10 text-center text-[#34a85a] bold">
-          Coding Problems
-        </h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {currentQuestions.map((q) => (
-            <div
-              key={q.id}
-              onClick={() => handleClick(q.category)}
-              className="border border-gray-200 rounded-xl p-5 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span
-                  className={`px-2.5 py-0.5 text-xs font-semibold rounded-full ${
-                    q.level === "easy"
-                      ? "bg-green-100 text-green-600"
-                      : q.level === "medium"
-                      ? "bg-yellow-100 text-yellow-600"
-                      : "bg-red-100 text-red-600"
-                  }`}
-                >
-                  {q.level.toUpperCase()}
-                </span>
-                <span className="text-xs text-gray-400">{q.posted}</span>
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <header className="border-b border-emerald-500/10 sticky top-0 z-50 backdrop-blur-xl bg-black/80">
+        <div className="max-w-7xl mx-auto px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-ping absolute" />
+                <div className="w-2 h-2 bg-emerald-400 rounded-full" />
               </div>
-
-              <h2 className="text-base font-medium mb-1 text-gray-800">{q.title}</h2>
-              <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                {q.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                {q.tags.map((tag, i) => (
-                  <span
-                    key={i}
-                    className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex justify-between items-center text-sm text-gray-500">
-                <span>❤️ {q.likes}</span>
-                <span
-                  className={`font-medium ${
-                    q.category === "frontend"
-                      ? "text-blue-600"
-                      : q.category === "schema-design"
-                      ? "text-teal-600"
-                      : "text-purple-600"
-                  }`}
-                >
-                  {q.category}
-                </span>
-              </div>
+              <span className="text-xl font-light tracking-wider">CODEJUDGE</span>
             </div>
-          ))}
+            <button 
+              onClick={() => window.location.href = '/'}
+              className="text-sm tracking-wider hover:text-emerald-400 transition-colors"
+            >
+              ← BACK
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-8 py-16">
+        {/* Title & Stats */}
+        <div className="mb-12">
+          <h1 className="text-5xl font-light mb-4">
+            Coding <span className="text-emerald-400">Challenges</span>
+          </h1>
+          <p className="text-gray-500 text-lg">
+            {filteredQuestions.length} problems available
+          </p>
+        </div>
+
+        {/* Filters */}
+        <div className="mb-12 space-y-6">
+          {/* Search */}
+          <div className="relative max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search problems..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-zinc-900 border border-emerald-500/20 rounded-lg py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-emerald-500/40 transition-colors"
+            />
+          </div>
+
+          {/* Filter Pills */}
+          <div className="flex flex-wrap gap-3">
+            {/* Level Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 uppercase tracking-wider">Difficulty:</span>
+              {['all', 'easy', 'medium', 'hard'].map(level => (
+                <button
+                  key={level}
+                  onClick={() => setSelectedLevel(level)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    selectedLevel === level
+                      ? 'bg-emerald-500 text-black'
+                      : 'bg-zinc-900 text-gray-400 hover:text-white border border-emerald-500/20'
+                  }`}
+                >
+                  {level === 'all' ? 'All' : level.charAt(0).toUpperCase() + level.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            <div className="w-px h-8 bg-emerald-500/10" />
+
+            {/* Category Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 uppercase tracking-wider">Category:</span>
+              {['all', 'frontend', 'schema-design', 'web3'].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    selectedCategory === cat
+                      ? 'bg-emerald-500 text-black'
+                      : 'bg-zinc-900 text-gray-400 hover:text-white border border-emerald-500/20'
+                  }`}
+                >
+                  {cat === 'all' ? 'All' : cat === 'schema-design' ? 'Database' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Problems Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+          {currentQuestions.map((q) => {
+            const levelColor = levelColors[q.level];
+            const isHovered = hoveredCard === q.id;
+            
+            return (
+              <button
+                key={q.id}
+                onClick={() => handleClick(q.category)}
+                onMouseEnter={() => setHoveredCard(q.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                className="group relative bg-gradient-to-br from-zinc-900 to-black border border-emerald-500/20 rounded-2xl p-6 text-left overflow-hidden transition-all duration-300 hover:border-emerald-500/40"
+                style={{
+                  transform: isHovered ? 'scale(1.02)' : 'scale(1)'
+                }}
+              >
+                {/* Glow Effect */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: `radial-gradient(circle at top right, ${categoryColors[q.category]}10, transparent 70%)`
+                  }}
+                />
+
+                {/* Header */}
+                <div className="relative flex items-start justify-between mb-4">
+                  <span className={`px-3 py-1 text-xs font-medium rounded-full border ${levelColor.bg} ${levelColor.text} ${levelColor.border}`}>
+                    {q.level.toUpperCase()}
+                  </span>
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <Calendar className="w-3 h-3" />
+                    {new Date(q.posted).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </div>
+                </div>
+
+                {/* Title & Description */}
+                <div className="relative mb-4">
+                  <h3 className="text-lg font-light mb-2 group-hover:text-emerald-400 transition-colors">
+                    {q.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                    {q.description}
+                  </p>
+                </div>
+
+                {/* Tags */}
+                <div className="relative flex flex-wrap gap-2 mb-4">
+                  {q.tags.slice(0, 3).map((tag, i) => (
+                    <span
+                      key={i}
+                      className="text-xs bg-black/50 border border-emerald-500/20 text-gray-400 px-2 py-1 rounded"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Footer */}
+                <div className="relative flex items-center justify-between pt-4 border-t border-emerald-500/10">
+                  <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                    <Heart className="w-4 h-4" />
+                    <span>{q.likes}</span>
+                  </div>
+                  <div 
+                    className="text-xs uppercase tracking-wider font-medium"
+                    style={{ color: categoryColors[q.category] }}
+                  >
+                    {q.category === 'schema-design' ? 'Database' : q.category}
+                  </div>
+                </div>
+
+                {/* Hover Border Animation */}
+                <div 
+                  className="absolute bottom-0 left-0 h-0.5 bg-emerald-400 transition-all duration-300"
+                  style={{ width: isHovered ? '100%' : '0%' }}
+                />
+              </button>
+            );
+          })}
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-center items-center mt-10 gap-3">
-          <button
-            className="px-4 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          >
-            Prev
-          </button>
-          <span className="text-sm text-gray-600">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            className="px-4 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-          >
-            Next
-          </button>
-        </div>
-      </div>
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="p-3 rounded-lg border border-emerald-500/20 disabled:opacity-30 disabled:cursor-not-allowed hover:border-emerald-500/40 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-2">
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentPage === i + 1
+                      ? 'bg-emerald-400 w-8'
+                      : 'bg-zinc-700 hover:bg-zinc-600'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="p-3 rounded-lg border border-emerald-500/20 disabled:opacity-30 disabled:cursor-not-allowed hover:border-emerald-500/40 transition-colors"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {currentQuestions.length === 0 && (
+          <div className="text-center py-20">
+            <div className="inline-block p-8 rounded-2xl bg-zinc-900 border border-emerald-500/20 mb-4">
+              <Filter className="w-12 h-12 text-gray-600 mx-auto" />
+            </div>
+            <h3 className="text-xl font-light mb-2">No problems found</h3>
+            <p className="text-gray-500 text-sm">Try adjusting your filters</p>
+          </div>
+        )}
+      </main>
     </div>
   );
 };
+
 
 // export default QuestionList;

@@ -12,6 +12,7 @@ import {
   SandpackPreview,
   SandpackTests,
 } from "@codesandbox/sandpack-react";
+import { Play, Send, ChevronRight, X, CheckCircle2, AlertCircle, Terminal, Code2 } from 'lucide-react';
 
 const files = {
   "index.html": `<!DOCTYPE html>
@@ -124,58 +125,173 @@ describe('Todo App', () => {
 });`
 };
 
- function Frontend() {
+function Frontend() {
   const [activeTab, setActiveTab] = useState('description');
   const [showTests, setShowTests] = useState(false);
+  const [testStatus, setTestStatus] = useState(null);
+  const [viewMode, setViewMode] = useState('code'); // 'code' or 'preview'
+
+  const handleRunTests = () => {
+    setShowTests(true);
+    setTestStatus('running');
+    setTimeout(() => setTestStatus('passed'), 800);
+  };
 
   return (
     <div style={{ 
       height: '100vh', 
       display: 'flex', 
       flexDirection: 'column',
-      backgroundColor: '#ffffff',
-      color: '#262626',
+      backgroundColor: '#000000',
+      color: '#ffffff',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
       {/* Header */}
       <div style={{
-        height: '50px',
-        backgroundColor: '#ffffff',
-        borderBottom: '1px solid #e5e7eb',
+        height: '60px',
+        backgroundColor: '#000000',
+        borderBottom: '1px solid rgba(0, 255, 136, 0.1)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 20px',
-        gap: '20px'
+        padding: '0 24px',
+        gap: '24px'
       }}>
-        <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#34a85a' }}>
-          CodeChallenge
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ 
+            width: '8px', 
+            height: '8px', 
+            backgroundColor: '#00ff88',
+            borderRadius: '50%',
+            animation: 'pulse 2s infinite'
+          }} />
+          <div style={{ fontWeight: '300', fontSize: '20px', letterSpacing: '0.05em' }}>
+            CODEJUDGE
+          </div>
         </div>
+
+        <div style={{ 
+          fontSize: '14px', 
+          color: '#6b7280',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <ChevronRight size={14} />
+          <span style={{ color: '#00ff88' }}>Build a Todo Application</span>
+        </div>
+
         <div style={{ flex: 1 }} />
+
+        {/* View Toggle */}
+        <div style={{
+          display: 'flex',
+          gap: '4px',
+          backgroundColor: 'rgba(0, 255, 136, 0.1)',
+          padding: '4px',
+          borderRadius: '8px',
+          marginRight: '16px'
+        }}>
+          <button
+            onClick={() => setViewMode('code')}
+            style={{
+              padding: '8px 16px',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '12px',
+              fontWeight: '600',
+              letterSpacing: '0.05em',
+              backgroundColor: viewMode === 'code' ? '#00ff88' : 'transparent',
+              color: viewMode === 'code' ? '#000000' : '#9ca3af',
+              transition: 'all 0.2s',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Code2 size={14} />
+            CODE
+          </button>
+          <button
+            onClick={() => setViewMode('preview')}
+            style={{
+              padding: '8px 16px',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '12px',
+              fontWeight: '600',
+              letterSpacing: '0.05em',
+              backgroundColor: viewMode === 'preview' ? '#00ff88' : 'transparent',
+              color: viewMode === 'preview' ? '#000000' : '#9ca3af',
+              transition: 'all 0.2s',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Terminal size={14} />
+            PREVIEW
+          </button>
+        </div>
+
         <button 
-          onClick={() => setShowTests(!showTests)}
+          onClick={handleRunTests}
           style={{
-            backgroundColor: '#ffffff',
-            color: '#34a85a',
-            border: '2px solid #34a85a',
-            padding: '8px 18px',
-            borderRadius: '6px',
+            backgroundColor: 'transparent',
+            color: '#00ff88',
+            border: '1px solid rgba(0, 255, 136, 0.3)',
+            padding: '10px 20px',
+            borderRadius: '8px',
             cursor: 'pointer',
-            fontWeight: '600',
-            transition: 'all 0.2s'
-          }}>
-          Run Testcase
+            fontWeight: '500',
+            fontSize: '13px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.2s',
+            letterSpacing: '0.05em'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = 'rgba(0, 255, 136, 0.1)';
+            e.target.style.borderColor = '#00ff88';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = 'transparent';
+            e.target.style.borderColor = 'rgba(0, 255, 136, 0.3)';
+          }}
+        >
+          <Play size={14} />
+          RUN TESTS
         </button>
+
         <button style={{
-          backgroundColor: '#34a85a',
-          color: 'white',
+          backgroundColor: '#00ff88',
+          color: '#000000',
           border: 'none',
-          padding: '8px 20px',
-          borderRadius: '6px',
+          padding: '10px 24px',
+          borderRadius: '8px',
           cursor: 'pointer',
           fontWeight: '600',
-          boxShadow: '0 1px 3px rgba(52, 168, 90, 0.3)'
-        }}>
-          Submit
+          fontSize: '13px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          letterSpacing: '0.05em',
+          transition: 'all 0.2s',
+          boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)'
+        }}
+        onMouseOver={(e) => {
+          e.target.style.backgroundColor = '#00ddaa';
+          e.target.style.transform = 'scale(1.05)';
+        }}
+        onMouseOut={(e) => {
+          e.target.style.backgroundColor = '#00ff88';
+          e.target.style.transform = 'scale(1)';
+        }}
+        >
+          <Send size={14} />
+          SUBMIT
         </button>
       </div>
 
@@ -187,33 +303,42 @@ describe('Todo App', () => {
       }}>
         {/* Left Panel - Problem Description */}
         <div style={{
-          width: '30%',
-          borderRight: '1px solid #e5e7eb',
+          width: '450px',
+          borderRight: '1px solid rgba(0, 255, 136, 0.1)',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          backgroundColor: '#ffffff'
+          backgroundColor: '#000000'
         }}>
           {/* Tabs */}
           <div style={{
             display: 'flex',
-            borderBottom: '1px solid #e5e7eb',
-            backgroundColor: '#f0fdf4'
+            borderBottom: '1px solid rgba(0, 255, 136, 0.1)',
+            backgroundColor: '#0a0f0d'
           }}>
             {['description', 'solution', 'submissions'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 style={{
-                  padding: '12px 16px',
+                  padding: '14px 20px',
                   border: 'none',
-                  backgroundColor: activeTab === tab ? '#ffffff' : '#f0fdf4',
-                  color: activeTab === tab ? '#16a34a' : '#6b7280',
+                  backgroundColor: activeTab === tab ? '#000000' : 'transparent',
+                  color: activeTab === tab ? '#00ff88' : '#6b7280',
                   cursor: 'pointer',
-                  borderBottom: activeTab === tab ? '3px solid #34a85a' : 'none',
-                  textTransform: 'capitalize',
-                  fontWeight: activeTab === tab ? '600' : '500',
-                  fontSize: '13px'
+                  borderBottom: activeTab === tab ? '2px solid #00ff88' : 'none',
+                  textTransform: 'uppercase',
+                  fontWeight: activeTab === tab ? '600' : '400',
+                  fontSize: '11px',
+                  letterSpacing: '0.1em',
+                  flex: 1,
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => {
+                  if (activeTab !== tab) e.target.style.color = '#9ca3af';
+                }}
+                onMouseOut={(e) => {
+                  if (activeTab !== tab) e.target.style.color = '#6b7280';
                 }}
               >
                 {tab}
@@ -225,76 +350,173 @@ describe('Todo App', () => {
           <div style={{
             flex: 1,
             overflow: 'auto',
-            padding: '16px',
-            backgroundColor: '#ffffff'
+            padding: '24px',
+            backgroundColor: '#000000'
           }}>
             {activeTab === 'description' && (
               <div>
-                <h2 style={{ color: '#262626', marginTop: 0, fontSize: '18px' }}>
-                  1. Build a Todo Application
-                </h2>
-                <div style={{ 
-                  display: 'inline-block',
-                  padding: '4px 10px',
-                  backgroundColor: '#d1fae5',
-                  color: '#065f46',
-                  borderRadius: '12px',
-                  fontSize: '11px',
-                  fontWeight: '600',
-                  marginBottom: '16px',
-                  border: '1px solid #a7f3d0'
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  marginBottom: '20px'
                 }}>
-                  Easy
+                  <Code2 size={20} color="#00ff88" />
+                  <h2 style={{ 
+                    color: '#ffffff', 
+                    margin: 0, 
+                    fontSize: '20px',
+                    fontWeight: '300',
+                    letterSpacing: '0.02em'
+                  }}>
+                    Todo Application
+                  </h2>
                 </div>
 
-                <p style={{ color: '#4b5563', lineHeight: '1.6', fontSize: '14px' }}>
+                <div style={{ 
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '6px 14px',
+                  backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                  color: '#00ff88',
+                  borderRadius: '20px',
+                  fontSize: '11px',
+                  fontWeight: '600',
+                  marginBottom: '24px',
+                  border: '1px solid rgba(0, 255, 136, 0.2)',
+                  letterSpacing: '0.05em'
+                }}>
+                  EASY
+                </div>
+
+                <p style={{ 
+                  color: '#9ca3af', 
+                  lineHeight: '1.7', 
+                  fontSize: '14px',
+                  marginBottom: '24px'
+                }}>
                   Create a functional Todo application using React that allows users to add, toggle completion status, and remove todo items.
                 </p>
 
-                <h3 style={{ color: '#262626', marginTop: '20px', fontSize: '15px' }}>Requirements:</h3>
-                <ul style={{ color: '#4b5563', lineHeight: '1.7', fontSize: '13px', paddingLeft: '20px' }}>
-                  <li>Input field to enter new todos</li>
-                  <li>Button to add todos to the list</li>
-                  <li>Display list of all todos</li>
-                  <li>Click on todo to toggle completion</li>
-                  <li>Delete button to remove todos</li>
+                <div style={{
+                  height: '1px',
+                  backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                  marginBottom: '24px'
+                }} />
+
+                <h3 style={{ 
+                  color: '#ffffff', 
+                  marginTop: '0',
+                  marginBottom: '16px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase'
+                }}>
+                  Requirements
+                </h3>
+                <ul style={{ 
+                  color: '#9ca3af', 
+                  lineHeight: '1.8', 
+                  fontSize: '13px', 
+                  paddingLeft: '20px',
+                  marginBottom: '24px'
+                }}>
+                  <li style={{ marginBottom: '8px' }}>Input field to enter new todos</li>
+                  <li style={{ marginBottom: '8px' }}>Button to add todos to the list</li>
+                  <li style={{ marginBottom: '8px' }}>Display list of all todos</li>
+                  <li style={{ marginBottom: '8px' }}>Click on todo to toggle completion</li>
+                  <li style={{ marginBottom: '8px' }}>Delete button to remove todos</li>
                 </ul>
 
-                <h3 style={{ color: '#262626', marginTop: '20px', fontSize: '15px' }}>Example:</h3>
+                <h3 style={{ 
+                  color: '#ffffff', 
+                  marginTop: '24px',
+                  marginBottom: '16px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase'
+                }}>
+                  Example
+                </h3>
                 <div style={{
-                  backgroundColor: '#f0fdf4',
-                  padding: '12px',
-                  borderRadius: '6px',
-                  border: '1px solid #bbf7d0',
-                  marginTop: '8px',
+                  backgroundColor: 'rgba(0, 255, 136, 0.05)',
+                  padding: '16px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(0, 255, 136, 0.2)',
+                  marginTop: '12px',
                   fontFamily: 'monospace',
                   fontSize: '12px'
                 }}>
-                  <div style={{ color: '#16a34a', fontWeight: '600' }}>Input: "Learn React"</div>
-                  <div style={{ color: '#6495ed', marginTop: '4px' }}>Action: Click "Add"</div>
-                  <div style={{ color: '#262626', marginTop: '4px' }}>Output: Todo appears</div>
+                  <div style={{ color: '#00ff88', fontWeight: '600', marginBottom: '8px' }}>
+                    → Input: "Learn React"
+                  </div>
+                  <div style={{ color: '#6b7280', marginBottom: '8px' }}>
+                    → Action: Click "Add"
+                  </div>
+                  <div style={{ color: '#ffffff' }}>
+                    → Output: Todo appears in list
+                  </div>
                 </div>
 
-                <h3 style={{ color: '#262626', marginTop: '20px', fontSize: '15px' }}>Constraints:</h3>
-                <ul style={{ color: '#4b5563', lineHeight: '1.7', fontSize: '13px', paddingLeft: '20px' }}>
-                  <li>Use React hooks (useState)</li>
-                  <li>Each todo must have unique ID</li>
-                  <li>Input clears after adding</li>
+                <h3 style={{ 
+                  color: '#ffffff', 
+                  marginTop: '24px',
+                  marginBottom: '16px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase'
+                }}>
+                  Constraints
+                </h3>
+                <ul style={{ 
+                  color: '#9ca3af', 
+                  lineHeight: '1.8', 
+                  fontSize: '13px', 
+                  paddingLeft: '20px'
+                }}>
+                  <li style={{ marginBottom: '8px' }}>Use React hooks (useState)</li>
+                  <li style={{ marginBottom: '8px' }}>Each todo must have unique ID</li>
+                  <li style={{ marginBottom: '8px' }}>Input clears after adding</li>
                 </ul>
               </div>
             )}
 
             {activeTab === 'solution' && (
-              <div style={{ color: '#4b5563', fontSize: '14px' }}>
-                <h3 style={{ color: '#262626', fontSize: '16px' }}>Solution Approach</h3>
-                <p>Complete the challenge first to unlock solutions!</p>
+              <div style={{ color: '#9ca3af', fontSize: '14px' }}>
+                <h3 style={{ color: '#ffffff', fontSize: '16px', marginBottom: '16px' }}>
+                  Solution Approach
+                </h3>
+                <div style={{
+                  padding: '20px',
+                  backgroundColor: 'rgba(0, 255, 136, 0.05)',
+                  border: '1px solid rgba(0, 255, 136, 0.2)',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <AlertCircle size={32} color="#6b7280" style={{ marginBottom: '12px' }} />
+                  <p>Complete the challenge first to unlock solutions!</p>
+                </div>
               </div>
             )}
 
             {activeTab === 'submissions' && (
-              <div style={{ color: '#4b5563', fontSize: '14px' }}>
-                <h3 style={{ color: '#262626', fontSize: '16px' }}>Your Submissions</h3>
-                <p>No submissions yet. Submit your solution to see it here!</p>
+              <div style={{ color: '#9ca3af', fontSize: '14px' }}>
+                <h3 style={{ color: '#ffffff', fontSize: '16px', marginBottom: '16px' }}>
+                  Your Submissions
+                </h3>
+                <div style={{
+                  padding: '20px',
+                  backgroundColor: 'rgba(0, 255, 136, 0.05)',
+                  border: '1px solid rgba(0, 255, 136, 0.2)',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <Terminal size={32} color="#6b7280" style={{ marginBottom: '12px' }} />
+                  <p>No submissions yet. Submit your solution to see it here!</p>
+                </div>
               </div>
             )}
           </div>
@@ -302,7 +524,7 @@ describe('Todo App', () => {
 
         {/* Right Panel - Code Editor */}
         <div style={{
-          width: '70%',
+          flex: 1,
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden'
@@ -312,27 +534,27 @@ describe('Todo App', () => {
             template="react"
             theme={{
               colors: {
-                surface1: '#ffffff',
-                surface2: '#f9fafb',
-                surface3: '#e5e7eb',
-                clickable: '#4b5563',
-                base: '#262626',
-                disabled: '#9ca3af',
-                hover: '#34a85a',
-                accent: '#34a85a',
+                surface1: '#0a0f0d',
+                surface2: '#000000',
+                surface3: '#1a1f1d',
+                clickable: '#9ca3af',
+                base: '#ffffff',
+                disabled: '#4b5563',
+                hover: '#00ff88',
+                accent: '#00ff88',
                 error: '#ef4444',
-                errorSurface: '#fee2e2'
+                errorSurface: '#1a0a0a'
               },
               syntax: {
-                plain: '#262626',
+                plain: '#ffffff',
                 comment: '#6b7280',
-                keyword: '#6495ed',
-                tag: '#34a85a',
-                punctuation: '#4b5563',
-                definition: '#0891b2',
-                property: '#0284c7',
-                static: '#ca8a04',
-                string: '#16a34a'
+                keyword: '#00ddaa',
+                tag: '#00ff88',
+                punctuation: '#9ca3af',
+                definition: '#00ccbb',
+                property: '#00ff88',
+                static: '#fbbf24',
+                string: '#00ff88'
               },
               font: {
                 body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -346,65 +568,108 @@ describe('Todo App', () => {
               activeFile: '/App.js'
             }}
           >
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-              <div style={{ 
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <SandpackLayout>
-                  <SandpackFileExplorer style={{ width: '200px' }} />
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              {viewMode === 'code' ? (
+                <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+                  <SandpackFileExplorer style={{ width: '200px', height: '100%' }} />
                   <SandpackCodeEditor 
                     closableTabs 
                     showTabs 
                     showLineNumbers
-                    style={{ flex: 1, minWidth: '500px' }}
+                    style={{ flex: 1, height: '100%' }}
                   />
+                </div>
+              ) : (
+                <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
                   <SandpackPreview 
                     showOpenInCodeSandbox={false}
                     showRefreshButton
-                    style={{ flex: 1, minWidth: '450px' }}
+                    // style={{ width: '100%', height: }}
+                    style={
+                      {
+                        width:"100%",
+                        height:"770px"
+                      }
+                    }
                   />
-                </SandpackLayout>
-              </div>
+                </div>
+              )}
 
-              {/* Test Cases Panel - Only shows when Run Testcase is clicked */}
+              {/* Test Cases Panel - Popup Modal */}
               {showTests && (
                 <div style={{
-                  height: '200px',
-                  borderTop: '1px solid #e5e7eb',
-                  backgroundColor: '#ffffff',
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  backdropFilter: 'blur(4px)',
                   display: 'flex',
-                  flexDirection: 'column'
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 1000
                 }}>
                   <div style={{
-                    padding: '10px 16px',
-                    backgroundColor: '#f0fdf4',
-                    borderBottom: '1px solid #bbf7d0',
-                    fontWeight: '600',
-                    fontSize: '13px',
-                    color: '#16a34a',
+                    width: '700px',
+                    maxHeight: '80vh',
+                    backgroundColor: '#0a0f0d',
+                    border: '1px solid rgba(0, 255, 136, 0.3)',
+                    borderRadius: '12px',
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
+                    flexDirection: 'column',
+                    overflow: 'hidden',
+                    boxShadow: '0 0 40px rgba(0, 255, 136, 0.2)'
                   }}>
-                    <span>Test Results</span>
-                    <button
-                      onClick={() => setShowTests(false)}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#6b7280',
-                        cursor: 'pointer',
-                        fontSize: '18px',
-                        padding: '0 4px'
-                      }}
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <div style={{ flex: 1, overflow: 'auto' }}>
-                    <SandpackTests verbose />
+                    <div style={{
+                      padding: '16px 24px',
+                      backgroundColor: '#000000',
+                      borderBottom: '1px solid rgba(0, 255, 136, 0.2)',
+                      fontWeight: '600',
+                      fontSize: '13px',
+                      color: '#00ff88',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {testStatus === 'running' && (
+                          <div style={{ 
+                            width: '6px', 
+                            height: '6px', 
+                            backgroundColor: '#fbbf24',
+                            borderRadius: '50%',
+                            animation: 'pulse 1s infinite'
+                          }} />
+                        )}
+                        {testStatus === 'passed' && (
+                          <CheckCircle2 size={16} color="#00ff88" />
+                        )}
+                        <span>Test Results</span>
+                      </div>
+                      <button
+                        onClick={() => setShowTests(false)}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: '#6b7280',
+                          cursor: 'pointer',
+                          padding: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          transition: 'color 0.2s'
+                        }}
+                        onMouseOver={(e) => e.target.style.color = '#ffffff'}
+                        onMouseOut={(e) => e.target.style.color = '#6b7280'}
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div style={{ flex: 1, overflow: 'auto', padding: '16px' }}>
+                      <SandpackTests />
+                    </div>
                   </div>
                 </div>
               )}
@@ -412,6 +677,13 @@ describe('Todo App', () => {
           </SandpackProvider>
         </div>
       </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 }
