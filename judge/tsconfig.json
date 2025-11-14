@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "public/script*.js", "../test/web3/index.jsx", "../test/web3/sql.jsx", "../test/web3/frontend.jsx", "src/routes/index.jsx"],
+  "include": ["**/*.ts", "**/*.tsx", "public/script*.js", "convex/payments.js"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",

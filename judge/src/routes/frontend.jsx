@@ -289,6 +289,10 @@ function Frontend() {
           e.target.style.backgroundColor = '#00ff88';
           e.target.style.transform = 'scale(1)';
         }}
+        onClick={()=>{
+          //navigate to submission page
+          window.location.href = '/result';
+        }}
         >
           <Send size={14} />
           SUBMIT

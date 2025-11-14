@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as Web3RouteImport } from './routes/web3'
 import { Route as SqlRouteImport } from './routes/sql'
+import { Route as ResultRouteImport } from './routes/result'
 import { Route as ProblemsRouteImport } from './routes/problems'
+import { Route as MatchmakingRouteImport } from './routes/matchmaking'
 import { Route as FrontendRouteImport } from './routes/frontend'
 import { Route as AnotherPageRouteImport } from './routes/anotherPage'
 import { Route as IndexRouteImport } from './routes/index'
@@ -26,9 +28,19 @@ const SqlRoute = SqlRouteImport.update({
   path: '/sql',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResultRoute = ResultRouteImport.update({
+  id: '/result',
+  path: '/result',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProblemsRoute = ProblemsRouteImport.update({
   id: '/problems',
   path: '/problems',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatchmakingRoute = MatchmakingRouteImport.update({
+  id: '/matchmaking',
+  path: '/matchmaking',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FrontendRoute = FrontendRouteImport.update({
@@ -51,7 +63,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/anotherPage': typeof AnotherPageRoute
   '/frontend': typeof FrontendRoute
+  '/matchmaking': typeof MatchmakingRoute
   '/problems': typeof ProblemsRoute
+  '/result': typeof ResultRoute
   '/sql': typeof SqlRoute
   '/web3': typeof Web3Route
 }
@@ -59,7 +73,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/anotherPage': typeof AnotherPageRoute
   '/frontend': typeof FrontendRoute
+  '/matchmaking': typeof MatchmakingRoute
   '/problems': typeof ProblemsRoute
+  '/result': typeof ResultRoute
   '/sql': typeof SqlRoute
   '/web3': typeof Web3Route
 }
@@ -68,21 +84,41 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/anotherPage': typeof AnotherPageRoute
   '/frontend': typeof FrontendRoute
+  '/matchmaking': typeof MatchmakingRoute
   '/problems': typeof ProblemsRoute
+  '/result': typeof ResultRoute
   '/sql': typeof SqlRoute
   '/web3': typeof Web3Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/anotherPage' | '/frontend' | '/problems' | '/sql' | '/web3'
+  fullPaths:
+    | '/'
+    | '/anotherPage'
+    | '/frontend'
+    | '/matchmaking'
+    | '/problems'
+    | '/result'
+    | '/sql'
+    | '/web3'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/anotherPage' | '/frontend' | '/problems' | '/sql' | '/web3'
+  to:
+    | '/'
+    | '/anotherPage'
+    | '/frontend'
+    | '/matchmaking'
+    | '/problems'
+    | '/result'
+    | '/sql'
+    | '/web3'
   id:
     | '__root__'
     | '/'
     | '/anotherPage'
     | '/frontend'
+    | '/matchmaking'
     | '/problems'
+    | '/result'
     | '/sql'
     | '/web3'
   fileRoutesById: FileRoutesById
@@ -91,7 +127,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnotherPageRoute: typeof AnotherPageRoute
   FrontendRoute: typeof FrontendRoute
+  MatchmakingRoute: typeof MatchmakingRoute
   ProblemsRoute: typeof ProblemsRoute
+  ResultRoute: typeof ResultRoute
   SqlRoute: typeof SqlRoute
   Web3Route: typeof Web3Route
 }
@@ -112,11 +150,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SqlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/result': {
+      id: '/result'
+      path: '/result'
+      fullPath: '/result'
+      preLoaderRoute: typeof ResultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/problems': {
       id: '/problems'
       path: '/problems'
       fullPath: '/problems'
       preLoaderRoute: typeof ProblemsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/matchmaking': {
+      id: '/matchmaking'
+      path: '/matchmaking'
+      fullPath: '/matchmaking'
+      preLoaderRoute: typeof MatchmakingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/frontend': {
@@ -147,7 +199,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnotherPageRoute: AnotherPageRoute,
   FrontendRoute: FrontendRoute,
+  MatchmakingRoute: MatchmakingRoute,
   ProblemsRoute: ProblemsRoute,
+  ResultRoute: ResultRoute,
   SqlRoute: SqlRoute,
   Web3Route: Web3Route,
 }

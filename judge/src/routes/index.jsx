@@ -560,9 +560,12 @@ const Home = () => {
               <div className="text-sm text-emerald-400 mb-4 tracking-widest uppercase animate-pulse">
                 Ready to begin?
               </div>
-              <button className="group px-12 py-5 bg-emerald-400 text-black text-lg font-medium rounded-full hover:bg-emerald-300 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 relative overflow-hidden">
+              <button className="group px-12 py-5 bg-emerald-400 text-black text-lg font-medium rounded-full hover:bg-emerald-300 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 relative overflow-hidden"
+              onClick={()=>{
+                window.location.href = '/matchmaking';
+              }}>
                 <span className="relative z-10 flex items-center gap-2">
-                  Start Your Journey
+                  Compete Now ⚔️🔥⚔️
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                 </span>
                 {/* Button Shine Effect */}

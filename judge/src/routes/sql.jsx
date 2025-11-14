@@ -13,7 +13,7 @@ import ReactFlow, {
   Handle,
   Position 
 } from 'reactflow';
-import 'reactflow/dist/style.css';
+// import 'reactflow/dist/style.css';
 import { Database, Play, Plus, Trash2, X, AlertCircle, BookOpen, Trophy, RefreshCw, Code, CheckCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
 
 // ==================== SQL ENGINE ====================
