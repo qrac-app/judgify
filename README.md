@@ -18,7 +18,7 @@ DevDAO (CodeJudge) is a next-gen arena for head-to-head coding battles across So
 | Technology | Implementation | Impact |
 |------------|----------------|--------|
 | **TanStack Start** | Full-document SSR streaming, server functions, nested routing, type-safe RPCs | Instant page loads, seamless full-stack development, zero API boilerplate |
-| **Convex** | Real-time matchmaking, reactive state sync, session management | Sub-second opponent matching with live updates,Real time leaderboard for contest |
+| **Convex** | Real-time matchmaking, reactive state sync, session management ,Real time leaderboard for contest | Sub-second opponent matching with live updates |
 | **Cloudflare Workers** | Edge computing, serverless API routes, global CDN | <50ms response times worldwide |
 | **Sentry** | Full-stack tracing, error tracking, performance monitoring | Complete observability from browser to database |
 | **Firecrawl** | Automated documentation scraping per challenge | Context-aware learning without leaving the platform |
