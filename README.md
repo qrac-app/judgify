@@ -1,6 +1,7 @@
 # DevDAO(CodeJudge) 
 
-<img width="1457" height="760" alt="image" src="https://github.com/user-attachments/assets/e17c3e00-e3c0-4f62-b245-b11f4d656ca7" />
+<img width="1146" height="672" alt="image" src="https://github.com/user-attachments/assets/03ebbdf9-a3e2-4046-9a18-81d75ef88b60" />
+
 
 AI is rewriting how companies hire. The old grind of pure DSA is dying out, replaced by rounds that demand real engineering instincts — building live features, fixing production-style bugs, crafting clean schemas, writing SQL that mirrors real data problems, designing scalable systems, and proving you can ship under pressure.
 
