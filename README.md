@@ -23,7 +23,7 @@ DevDAO (CodeJudge) is a next-gen arena for head-to-head coding battles across So
 | **Cloudflare Workers** | Edge computing, serverless API routes, global CDN | <50ms response times worldwide |
 | **Sentry** | Full-stack tracing, error tracking, performance monitoring | Complete observability from browser to database |
 | **Firecrawl** | Automated documentation scraping per challenge | Context-aware learning without leaving the platform |
-| **Autumn** | Payment processing for premium features | Seamless monetization with usage-based billing |
+| **Autumn (75% completed)** | Payment processing for premium features | Seamless monetization with usage-based billing |
 
 
 ---
